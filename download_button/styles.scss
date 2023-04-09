@@ -1,0 +1,62 @@
+$hl: #3bc8ef;
+
+@function mesh($c: #000, $box: content-box) {
+	$stops: $c, transparent 1px, transparent 3px, $c 4px;
+	@return repeating-linear-gradient(45deg, $stops) $box, 
+		repeating-linear-gradient(-45deg, $stops) $box;
+}
+
+@function hl($alpha: .1) {
+	@return linear-gradient($hl, rgba($hl, $alpha)) 0 / 0 100% no-repeat border-box;
+}
+
+html { background: #3a3a3a; }
+
+body { text-align: center; }
+
+button {
+	box-sizing: border-box;
+	margin-top: calc(50vh - 2em);
+	border: solid .25em transparent;
+	padding: 1px;
+	width: 10em;
+	border-radius: 5px;
+	box-shadow: 1px 1px 1px -1px rgba(#555, .75), 
+		1px 1px 2px -1px rgba(#555, .75);
+	background:
+		radial-gradient(rgba(#5a5a5a, .65) 25%, rgba(#5a5a5a, 0) 75%) 
+		  0 0/ 100% .125em no-repeat padding-box, 
+		mesh(rgba(#0c0c0c, .35)), 
+		linear-gradient(#2a2a2a, #050505) content-box, 
+		linear-gradient(#323232, #232323) padding-box, 
+		hl(), 
+		mesh(rgba(#222, .25), border-box), 
+		hl(1), 
+		linear-gradient(#151515, #2e2e2e) border-box;
+	color: #fff;
+	font: 500 1.25em/2.4 verdana, sans-serif;
+	text-transform: uppercase;
+	cursor: pointer;
+	
+	&:not(.loading):active {
+		transform: scale(.98);
+	}
+	
+	&:focus {
+		outline: none;
+		box-shadow: 1px 1px 1px -1px rgba($hl, .5);
+	}
+}
+
+.loading {
+	position: relative;
+	color: transparent;
+	cursor: auto;
+	
+	&:after {
+		position: absolute;
+		top: 0; right: 0; bottom: 0; left: 0;
+		color: $hl;
+		content: attr(data-perc);
+	}
+}
